@@ -26,6 +26,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(result)
   } catch (error) {
     console.error('POST /api/setup error:', error)
-    return NextResponse.json({ error: 'حدث خطأ أثناء إعداد قاعدة البيانات' }, { status: 500 })
+    // تشخيص مؤقت: كشف رسالة الخطأ الحقيقية لمعرفة سبب فشل الاتصال على Vercel
+    const detail = error instanceof Error ? `${error.name}: ${error.message}` : String(error)
+    return NextResponse.json({ error: 'حدث خطأ أثناء إعداد قاعدة البيانات', detail }, { status: 500 })
   }
 }
