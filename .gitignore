@@ -62,3 +62,6 @@ server.log
 /git-deploy
 /worklog.md
 /upload
+
+# but keep the example
+!.env.example
