@@ -1,0 +1,110 @@
+// Prisma schema — إلكترو ستور (متجر الأدوات الكهربائية والإلكترونيات)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// تصنيفات المنتجات
+model Category {
+  id        String    @id @default(cuid())
+  name      String // اسم التصنيف بالعربية
+  icon      String // اسم أيقونة lucide
+  sortOrder Int       @default(0)
+  products  Product[]
+}
+
+// المنتجات
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  oldPrice    Float?
+  image       String
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id])
+  brand       String?
+  rating      Float       @default(4.5)
+  reviews     Int         @default(0)
+  stock       Int         @default(10)
+  isFeatured  Boolean     @default(false)
+  badge       String? // مثل "الأكثر مبيعاً"
+  createdAt   DateTime    @default(now())
+}
+
+// الباقات (عروض مجموعات بأسعار مخفضة)
+model Package {
+  id          String  @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  oldPrice    Float?
+  image       String
+  features    String // JSON array: محتويات الباقة
+  badge       String?
+  isPopular   Boolean @default(false)
+  sortOrder   Int     @default(0)
+}
+
+// عنصر في سلة المشتريات (يمكن أن يكون منتجاً أو باقة)
+model CartItem {
+  id        String   @id @default(cuid())
+  sessionId String // معرف الجهاز/المستخدم المؤقت
+  productId String?
+  packageId String?
+  name      String // اسم العنصر (snapshot)
+  image     String?
+  unitPrice Float // سعر الوحدة لحظة الإضافة (من قاعدة البيانات)
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+// الطلب
+model Order {
+  id           String      @id @default(cuid())
+  orderNumber  String      @unique
+  sessionId    String // ربط الطلب بالجهاز لعرض "طلباتي"
+  customerName String
+  phone        String
+  city         String
+  address      String
+  notes        String?
+  total        Float
+  status       String      @default("pending") // pending | confirmed | shipped | delivered
+  createdAt    DateTime    @default(now())
+  items        OrderItem[]
+
+  @@index([sessionId])
+}
+
+// عنصر داخل الطلب
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String?
+  packageId String?
+  name      String
+  image     String?
+  unitPrice Float
+  quantity  Int
+}
+
+// إعدادات المحل (صف واحد id="main") — تُدار من لوحة الإدارة
+model StoreSettings {
+  id                    String   @id @default("main")
+  storeName             String   @default("ELMASRY ELECTRIC")
+  storeTagline          String   @default("للأدوات الكهربائية والإنارة")
+  storePhone            String   @default("01000000000")
+  adminPin              String   @default("1234")
+  shippingFee           Float    @default(50)
+  freeShippingThreshold Float    @default(1500)
+  updatedAt             DateTime @updatedAt
+}

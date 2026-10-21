@@ -1,0 +1,32 @@
+{
+  "name": "ELMASRY ELECTRIC — أدوات ومستلزمات الكهرباء",
+  "short_name": "ELMASRY",
+  "description": "محل ELMASRY ELECTRIC للأدوات الكهربائية — أسلاك، قواطع، لمبات، خراطيم، دوايات، لحام. أسعار بالجنيه المصري",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#18181b",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
