@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { requireAdmin } from '@/lib/admin'
+export const dynamic = 'force-dynamic'
 
 // GET /api/admin/orders?status= — كل طلبات العملاء (لوحة التحكم، محمي برمز الإدارة)
 export async function GET(req: NextRequest) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { getSettings, requireAdmin } from '@/lib/admin'
+export const dynamic = 'force-dynamic'
 
 // GET /api/settings — إعدادات عامة (بدون رمز الإدارة)
 export async function GET() {
